@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.cvoronin.boilerplateapp">
+    <!-- При замене имени пакета не забудь изменить его в proguard-rules -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:name=".App"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity" android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".modules.weather.ui.WeatherActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d3839879c5127af1b43e47de0cc1193872f203f7" />
+
+    </application>
+</manifest>

@@ -1,0 +1,150 @@
+def support_version = "24.1.1"
+def anko_version = '0.8.3'
+def okhttp_version = '3.4.1'
+def retrofit_version = '2.0.2'
+def picasso_version = '2.5.2'
+def dagger_version = '2.7'
+def rx_java = "1.1.10"
+def rx_android = '1.2.1'
+def timber_version = '4.3.1'
+def rx_bindings = '0.4.0'
+def crashlytics_version = '2.6.1'
+def answers_version = '1.3.8'
+
+buildscript {
+    ext.realm_version = '1.2.0'
+
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.5.5'
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
+        classpath 'io.fabric.tools:gradle:1.+'
+        classpath "io.realm:realm-gradle-plugin:$realm_version"
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
+apply plugin: 'com.getkeepsafe.dexcount'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+    defaultConfig {
+        applicationId "ru.cvoronin.boilerplateapp"
+        minSdkVersion 16
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+
+        debug {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url 'https://maven.fabric.io/public' }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    compile "com.android.support:support-v4:$support_version"
+    compile "com.android.support:appcompat-v7:$support_version"
+    compile "com.android.support:design:$support_version"
+    compile "com.android.support:recyclerview-v7:$support_version"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.jetbrains.anko:anko-common:$anko_version"
+    compile "org.jetbrains.anko:anko-sdk23:$anko_version"
+    compile "org.jetbrains.anko:anko-support-v4:$anko_version"
+    compile "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
+
+    compile "com.squareup.okhttp3:okhttp:$okhttp_version"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    compile "com.squareup.retrofit2:retrofit:$retrofit_version"
+    compile "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    compile "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+
+    compile "com.squareup.picasso:picasso:$picasso_version"
+    compile "com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2"
+
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    compile "com.google.dagger:dagger:$dagger_version"
+    provided 'javax.annotation:jsr250-api:1.0'
+
+    compile 'com.google.code.gson:gson:2.7'
+    // Kotson: Gson for Kotlin
+    // https://github.com/SalomonBrys/Kotson
+    compile 'com.github.salomonbrys.kotson:kotson:2.4.0'
+
+    compile "io.reactivex:rxjava:$rx_java"
+    compile "io.reactivex:rxandroid:$rx_android"
+    compile "com.jakewharton.rxbinding:rxbinding-kotlin:$rx_bindings"
+    compile "com.jakewharton.rxbinding:rxbinding-support-v4-kotlin:$rx_bindings"
+    compile "com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:$rx_bindings"
+    compile "com.jakewharton.rxbinding:rxbinding-design-kotlin:$rx_bindings"
+    compile "com.jakewharton.rxbinding:rxbinding-recyclerview-v7-kotlin:$rx_bindings"
+
+    compile "com.jakewharton.timber:timber:$timber_version"
+
+    compile("com.crashlytics.sdk.android:crashlytics:$crashlytics_version@aar") {
+        transitive = true;
+    }
+    compile("com.crashlytics.sdk.android:answers:$answers_version@aar") {
+        transitive = true;
+    }
+
+    compile 'com.andkulikov:transitionseverywhere:1.6.7'
+
+    compile 'com.afollestad.material-dialogs:core:0.9.0.0'
+
+    compile 'com.google.guava:guava:19.0'
+
+    // Тестирование ...............................................................................
+    testCompile 'junit:junit:4.12'
+
+    testCompile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+//    testCompile "org.mockito:mockito-core:1.10.19"
+    // https://github.com/nhaarman/mockito-kotlin
+    testCompile "com.nhaarman:mockito-kotlin:0.6.1"
+    testCompile 'org.robolectric:robolectric:3.1.2'
+    testCompile "org.robolectric:shadows-support-v4:3.0"
+//    testCompile 'com.squareup.assertj:assertj-android:1.1.1'
+}
+
+kapt {
+    generateStubs = true
+}
+
