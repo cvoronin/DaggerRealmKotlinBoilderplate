@@ -98,7 +98,11 @@ class WeatherPresenter @Inject constructor(
                                     handler.postDelayed({ goNext() }, 300)
 
                                 },
-                                { error -> handler.postDelayed({ onError(error) }, 300) }
+                                { error ->
+                                    this@WeatherPresenter.weather = null
+                                    this@WeatherPresenter.loadedAt = 0
+
+                                    handler.postDelayed({ onError(error) }, 300) }
                         )
             }
         }
