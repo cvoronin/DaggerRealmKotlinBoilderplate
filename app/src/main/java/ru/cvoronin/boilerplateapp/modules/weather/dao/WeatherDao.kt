@@ -1,7 +1,7 @@
 package ru.cvoronin.boilerplateapp.modules.weather.dao
 
 import io.realm.Realm
-import ru.cvoronin.boilerplateapp.modules.weather.domain.WeatherResponse
+import ru.cvoronin.boilerplateapp.modules.weather.domain.*
 import ru.cvoronin.boilerplateapp.modules.weather.injection.WeatherScope
 import ru.simpls.brs2.commons.functions.now
 import ru.simpls.brs2.commons.modules.core.preferenses.DaoPreferencesHelper
@@ -26,7 +26,7 @@ class WeatherDao @Inject constructor(
                 with(realmProvider.get()) {
                     use { realm ->
                         executeTransaction {
-                            realm.delete(WeatherResponse::class.java)
+                            deleteWeather(realm)
                             realm.insert(weather)
                             daoPreferencesHelper.saveLoadMoment(WeatherResponse::class.java.simpleName, now())
                         }
@@ -35,6 +35,14 @@ class WeatherDao @Inject constructor(
                 
                 weather
             }
+
+    private fun deleteWeather(realm : Realm) {
+        realm.delete(WeatherResponse::class.java)
+        realm.delete(Coord::class.java)
+        realm.delete(Weather::class.java)
+        realm.delete(MainInfo::class.java)
+        realm.delete(Wind::class.java)
+    }
 
     fun load(): Single<WeatherResponse> =
             Single.fromCallable {
